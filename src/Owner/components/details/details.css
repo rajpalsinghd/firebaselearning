@@ -1,0 +1,65 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  .dropdown {
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    margin-right: 20px;
+    flex-basis: 25%;
+  }
+  
+  .input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-basis: 70%;
+  }
+  
+  .price-input,
+  .quantity-input {
+    padding: 10px;
+    border: none;
+  border-radius: 5px;
+    background-color: #f1f1f1;
+    margin-right: 20px;
+    flex-basis: 40%;
+  }
+  .plus-button {
+    background-color: pink;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    height: 30px;
+    width: 30px;
+    margin-left: 10px;
+  }
+  
+  .plus-button:hover {
+    background-color: #E75480;
+  }
+  
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .dropdown,
+    .price-input,
+    .quantity-input {
+      margin: 10px 0;
+      width: 100%;
+      flex-basis: unset;
+    }
+  }

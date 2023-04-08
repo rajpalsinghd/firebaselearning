@@ -1,0 +1,99 @@
+.calculator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .calculator-input {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+  
+  .calculator-input input {
+    border: none;
+    outline: none;
+    font-size: 24px;
+  }
+  
+  .calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .calculator-buttons button {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    padding: 10px;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .calculator-buttons button:hover {
+    background-color: #ccc;
+    cursor: pointer;
+  }
+  
+  .calculator-select {
+    margin-bottom: 20px;
+  }
+  
+  .calculator-select select {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+  }
+  
+  .calculator-mode {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .calculator-mode label {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .calculator-mode input[type='radio'] {
+    margin-right: 5px;
+  }
+  
+  .calculator-submit {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .calculator-submit button {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .calculator-submit button:hover {
+    background-color: #0069d9;
+    cursor: pointer;
+  }
+  
