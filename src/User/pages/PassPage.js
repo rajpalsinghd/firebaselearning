@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./passpage.css"
 import { collection, setDoc, doc } from "firebase/firestore";
 import { auth, db } from '../../config';
@@ -9,10 +9,21 @@ import {  getDocs, onSnapshot, query, where }  from "firebase/firestore";
 
 export default function PassPage() {
 
+    const[email, setEmail]= useState("")
+    const[password, setPassword]= useState("")
+
+
+    const emailHandler=((e)=>{
+setEmail(e.target.value)
+    })
+    const passwordHandler=((e)=>{
+        setPassword(e.target.value)
+    })
+
     const navigate = useNavigate()
     const submitHandler =(()=>{
         console.log("loooooog")
-  signInWithEmailAndPassword(auth, "vikas2015041088_user@gmail.com", "vikas$#123").then((user)=>{
+  signInWithEmailAndPassword(auth, email, password).then((user)=>{
     (async function x(){
         const querySnapshot = await getDocs(
             query(collection(db, "prices")
@@ -27,7 +38,7 @@ export default function PassPage() {
     })()
    
   }).catch((err)=>{
-console.log(err)
+alert("wrong credentials")
   })
     })
   return (
@@ -37,13 +48,13 @@ console.log(err)
   
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email"/>
+      <input type="email" id="email" name="email" placeholder="Enter your email" onChange={emailHandler}/>
     </div>
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Enter your password"/>
+      <input type="password" id="password" name="password" placeholder="Enter your password" onChange={passwordHandler}/>
     </div>
-    <button  onClick={submitHandler}>Login</button>
+    <button className='button' onClick={submitHandler}>Login</button>
  
 </div>  
     </div>

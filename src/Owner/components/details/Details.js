@@ -3,10 +3,19 @@ import "./details.css"
 import { useState } from 'react'
 import { v4 as uuidv4 } from "uuid";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { db } from '../../../config';
+import { auth, db } from '../../../config';
 
 
 export default function Details() {
+
+  const [user, setUser] = useState("")
+  React.useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+
+    return () => unsubscribe();
+  }, []);
     const [data , setData] = useState({
         name:"",
         price:"",
@@ -17,11 +26,13 @@ export default function Details() {
     })
     const submitHandler=(async()=>{
         console.log(data)
+        let obj={...data}
+        obj.email = user.email
         let id = uuidv4();
 
         const plansRef = collection(db, "prices");
     
-        await setDoc(doc(plansRef, id),data);
+        await setDoc(doc(plansRef, id),obj);
     })
   return (
     <div className="row">

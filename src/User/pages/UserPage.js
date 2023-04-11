@@ -1,45 +1,56 @@
-
-import React, { useState } from 'react';
-import './userPage.css';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import "./userPage.css";
+import { useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { collection, setDoc, doc } from "firebase/firestore";
-import { db } from '../../config';
+import { db } from "../../config";
 
-
-function UserPage() {
+export default function UserPage() {
   const [input, setInput] = useState("");
   const [option, setOption] = useState("");
   const [mode, setMode] = useState("");
   
-  const{state} = useLocation()
+
+  const { state } = useLocation();
 
   const handleNumberClick = (number) => {
     setInput(input + number);
   };
-
   
-  const handleSelect=((e)=>{
- setOption(e.target.value)
-  })
+  function reset() {
+  setInput("")
+  }
 
-  const handleSubmit = async() => {
+  const handleSelect = (e) => {
+    setOption(e.target.value);
+  };
+
+  const handleSubmit = async () => {
     console.log("Input:", input);
     console.log("Option:", option);
     console.log("Mode:", mode);
-    console.log(state)
-    let obj={
-        price: input, mode,
-        name : option,
-        email: state.email.slice(0,state.email.split("@")[0].length-5),
-        date:new Date().toISOString().slice(0, 10)
+    console.log(state);
+    let foundObj = state.data.find((ele) => {
+      if (ele.name === option) return ele;
+    });
+    if (!foundObj) {
+      alert("No price added for: " + option + " today by owner");
+      return;
     }
+    let obj = {
+      buyingPrice: input,
+      price: foundObj.price,
+      mode,
+      name: option,
+      email: state.email.slice(0, state.email.split("@")[0].length - 5),
+      date: new Date().toISOString().slice(0, 10),
+    };
     let id = uuidv4();
 
-        const ordersRef = collection(db, "orders");
-    
-        await setDoc(doc(ordersRef, id),obj);
-    console.log(obj)
+    const ordersRef = collection(db, "orders");
+
+    await setDoc(doc(ordersRef, id), obj);
+    console.log(obj);
   };
 
   return (
@@ -58,24 +69,33 @@ function UserPage() {
         <button onClick={() => handleNumberClick("8")}>8</button>
         <button onClick={() => handleNumberClick("9")}>9</button>
         <button onClick={() => handleNumberClick("0")}>0</button>
+        <button onClick={reset}>RES</button>
       </div>
       <div className="calculator-select">
         <select value={option} onChange={handleSelect}>
-       
-        <option value="petrol">Petrol</option>
-        <option value="petrol-sp">Petrol SP</option>
-        <option value="diesel">Diesel</option>
-        <option value="diesel-sp">Diesel SP</option>
-    
+          <option value="petrol">Petrol</option>
+          <option value="petrol-sp">Petrol SP</option>
+          <option value="diesel">Diesel</option>
+          <option value="diesel-sp">Diesel SP</option>
         </select>
       </div>
       <div className="calculator-mode">
         <label>
-          <input type="radio" value="Online" checked={mode === "Online"} onChange={(e) => setMode(e.target.value)} />
+          <input
+            type="radio"
+            value="Online"
+            checked={mode === "Online"}
+            onChange={(e) => setMode(e.target.value)}
+          />
           Online
         </label>
         <label>
-          <input type="radio" value="Offline" checked={mode === "Offline"} onChange={(e) => setMode(e.target.value)} />
+          <input
+            type="radio"
+            value="Offline"
+            checked={mode === "Offline"}
+            onChange={(e) => setMode(e.target.value)}
+          />
           Offline
         </label>
       </div>
@@ -86,4 +106,6 @@ function UserPage() {
   );
 }
 
-export default UserPage;
+
+
+
