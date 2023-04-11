@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "./password.css";
 import { v4 as uuidv4 } from "uuid";
-import { collection, setDoc, doc } from "firebase/firestore";
-import { auth, db } from '../../../config';
-import { createUserWithEmailAndPassword, updatePassword } from 'firebase/auth';
-import { useEffect } from 'react';
-
+import {
+  collection,
+  setDoc,
+  doc,
+  where,
+  query,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { auth, db } from "../../../config";
+import { useEffect } from "react";
 
 function Password() {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const[user, setUser] = useState("")
-  
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [user, setUser] = useState("");
+
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
-    
   };
 
   const handleConfirmPasswordChange = (event) => {
@@ -29,29 +35,33 @@ function Password() {
     return () => unsubscribe();
   }, []);
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
+    if (password === "" || confirmPassword === "") {
+      alert("Password cannot be empty");
+      return;
+    } else if (password !== confirmPassword) {
+      alert("Confirm password is not same as password");
+      return;
+    }
     let id = uuidv4();
-
     const plansRef = collection(db, "owners");
-    let pr = user.email.split("@")
- 
-   
-    let data = {email:pr[0] + "_user@" + pr[1], password}
-    // await setDoc(doc(plansRef, id),data);
-    createUserWithEmailAndPassword(auth, data.email, data.password).then((user)=>{
-console.log(user)
-    }).catch((err)=>{
-
-console.log(err)
-
-    })
-    console.log(password)
+    let pr = user.email.split("@");
+    let data = { email: pr[0] + "_user@" + pr[1], password };
+    let q = query(collection(db, "owners"), where("email", "==", data.email));
+    let qs = await getDocs(q);
+    if (qs.size) {
+      qs.forEach((doc) => {
+        console.log(doc.data());
+        id = doc.id;
+      });
+    }
+    //await deleteDoc(doc(plansRef, id));
+    await setDoc(doc(plansRef, id), data);
     event.preventDefault();
-
-};
+  };
 
   return (
-    <div className='form'>
+    <div className="form">
       <label htmlFor="password">Password:</label>
       <input
         type="password"
@@ -68,8 +78,10 @@ console.log(err)
         onChange={handleConfirmPasswordChange}
       />
 
-      <button onClick={handleSubmit} className='pass'>Submit</button>
-      </div>
+      <button onClick={handleSubmit} className="pass">
+        Submit
+      </button>
+    </div>
   );
 }
 

@@ -7,18 +7,17 @@ import { db } from "../../config";
 
 export default function UserPage() {
   const [input, setInput] = useState("");
-  const [option, setOption] = useState("");
+  const [option, setOption] = useState("petrol");
   const [mode, setMode] = useState("");
-  
 
   const { state } = useLocation();
 
   const handleNumberClick = (number) => {
     setInput(input + number);
   };
-  
+
   function reset() {
-  setInput("")
+    setInput("");
   }
 
   const handleSelect = (e) => {
@@ -29,6 +28,10 @@ export default function UserPage() {
     console.log("Input:", input);
     console.log("Option:", option);
     console.log("Mode:", mode);
+    if (!input || !mode) {
+      alert("Please fill all the required details");
+      return;
+    }
     console.log(state);
     let foundObj = state.data.find((ele) => {
       if (ele.name === option) return ele;
@@ -105,7 +108,3 @@ export default function UserPage() {
     </div>
   );
 }
-
-
-
-
